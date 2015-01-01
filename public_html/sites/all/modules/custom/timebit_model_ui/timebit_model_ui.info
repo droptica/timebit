@@ -7,3 +7,4 @@ project status url = http://updates-drupal.droptica.com/timebit/release-history
 
 dependencies[] = liveclock
 dependencies[] = livetimer
+dependencies[] = date_popup

@@ -29,6 +29,7 @@ function application_install() {
   //Enable modules.
   $module_list = array(
     'application',
+    'date_popup',
     'menu',
     'field',
     'block',
@@ -62,6 +63,16 @@ function application_install() {
     'link_title' => t('My Time Logs'),
     'menu_name' => 'main-menu', // Menu machine name, for example: main-menu
     'weight' => 40,
+    'plid' => 0, // Parent menu item, 0 if menu item is on top level
+    'module' => 'menu',
+  );
+  menu_link_save($item);
+
+  $item = array(
+    'link_path' => 'timebit/reports',
+    'link_title' => t('Reports'),
+    'menu_name' => 'main-menu', // Menu machine name, for example: main-menu
+    'weight' => 45,
     'plid' => 0, // Parent menu item, 0 if menu item is on top level
     'module' => 'menu',
   );

@@ -139,3 +139,41 @@ function timebit_model_log_get_log_in_progress($account = '') {
 
   return $project;
 }
+
+
+/**
+ * Get logs filtered by date range and uid.
+ *
+ * @param $timestamp_from
+ * @param $timestamp_to
+ * @param $uid
+ * @return null
+ */
+function timebit_model_log_get_by_date_and_uid($timestamp_start, $timestamp_stop, $uid) {
+  $ret = array();
+
+  $query = db_select('timebit_logs', 'tl');
+  $query->fields('tl');
+  if ($uid != -1) {
+    $query->condition('uid', $uid);
+  }
+
+  if ($timestamp_start) {
+    $query->condition('timestamp_start', $timestamp_start, '>=');
+  }
+
+  if ($timestamp_stop) {
+    $query->condition('timestamp_stop', $timestamp_stop, '<=');
+  }
+
+  // Only finished logs.
+  $query->condition('timestamp_stop', 0, '>');
+
+  $result = $query->execute();
+
+  foreach ($result as $row) {
+    $ret[] = $row;
+  }
+
+  return $ret;
+}

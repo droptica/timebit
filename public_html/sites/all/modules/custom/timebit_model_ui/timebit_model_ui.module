@@ -10,10 +10,37 @@
 function timebit_model_ui_help($path, $arg) {
   switch ($path) {
     case 'admin/help#timebit_model_ui':
-      $output .= '<p>' . t('TODO') . ':</p>';
+      $output = '<p>' . t('TODO') . ':</p>';
       return $output;
   }
 }
+
+/**
+ * Implements hook_permission().
+ */
+function timebit_model_ui_permission() {
+  return array(
+    'access reports page' => array(
+      'title' => t('Access reports page'),
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_menu().
+ */
+function timebit_model_ui_menu() {
+  $items['timebit/reports'] = array(
+    'title' => 'Reports',
+    'page callback' => 'timebit_model_ui_reports_page',
+    'access arguments' => array('access administration menu'),
+    'file' => 'timebit_model_ui.reports.inc',
+  );
+  return $items;
+}
+
+
 
 /**
  * Implements hook_block_info().

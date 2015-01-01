@@ -37,7 +37,7 @@ function application_features_list() {
  * @return [type]          [description]
  */
 function applitaction_get_account($account) {
-  if ($account == '') {
+  if ($account == '' || $account == NULL) {
     global $user;
     $account = $user;
   }
