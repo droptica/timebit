@@ -34,7 +34,7 @@ function timebit_model_ui_menu() {
   $items['timebit/reports'] = array(
     'title' => 'Reports',
     'page callback' => 'timebit_model_ui_reports_page',
-    'access arguments' => array('access administration menu'),
+    'access arguments' => array('access reports page'),
     'file' => 'timebit_model_ui.reports.inc',
   );
   return $items;
