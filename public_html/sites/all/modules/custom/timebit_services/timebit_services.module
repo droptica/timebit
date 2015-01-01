@@ -1,0 +1,151 @@
+<?php
+/**
+ * @file
+ * Main module.
+ */
+
+include_once 'timebit_services.features.inc';
+
+
+/**
+ * Implements hook_service_resources().
+ */
+function timebit_services_services_resources() {
+  $resources = array();
+
+  $resources = array(
+    'timebit' => array(
+      'actions' => array(
+        'logtime' => array(
+          'help' => 'Log time',
+          'callback' => 'timebit_services_card_createlog',
+          'args' => array(
+            array(
+              'name' => 'card_code',
+              'optional' => FALSE,
+              'type' => 'string',
+              'description' => 'card_code',
+              //'default value' => 0,
+              'source' => array('data' => 'card_code'),
+            ),
+            array(
+              'name' => 'hash',
+              'optional' => FALSE,
+              'type' => 'string',
+              'description' => 'hash',
+              //'default value' => 0,
+              'source' => array('data' => 'hash'),
+            ),
+          ),
+          'access callback' => 'timebit_services_services_access',
+          'access callback file' => array(
+            'type' => 'inc',
+            'module' => 'timebit_services',
+            'name' => 'resources/timebit_services',
+          ),
+          'file' => array('type' => 'inc', 'module' => 'timebit_services', 'name' => 'resources/timebit_services'),
+        ),
+      ),
+    ),
+
+  );
+  return $resources;
+}
+
+/**
+ * Implements hook_form_alter.
+ */
+function timebit_services_form_alter(&$form, &$form_state, $form_id) {
+  // Add field for saving user RFID card number.
+  if ($form_id == 'user_profile_form') {
+
+    $form['timebit_user_card_code'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Timebit user RFID card code'),
+      '#default_value' => timebit_services_users_cards_load_card_code($form['#user']->uid),
+      '#required' => TRUE,
+      // @TODO - validate card is unique
+    );
+
+   $form['#submit'][] = 'timebit_services_user_card_number_save';
+
+  }
+}
+
+/**
+ * [timebit_services_user_card_number_save description]
+ * @param  [type] $form       [description]
+ * @param  [type] $form_state [description]
+ * @return [type]             [description]
+ */
+function timebit_services_user_card_number_save($form, &$form_state) {
+  $values = $form_state['values'];
+  timebit_services_users_cards_insert_update($values['uid'], $values['timebit_user_card_code']);
+}
+
+/**
+ * [timebit_services_users_cards_insert_update description]
+ * @param  [type] $uid       [description]
+ * @param  [type] $card_code [description]
+ * @return [type]            [description]
+ */
+function timebit_services_users_cards_insert_update($uid, $card_code) {
+  // Check if exists.
+  if (timebit_services_users_cards_load($uid)) {
+    $row = new stdClass();
+    $row->uid = $uid;
+    $row->card_code = $card_code;
+    drupal_write_record('users_cards', $row, array('uid'));
+  }
+  else {
+    $row = new stdClass();
+    $row->uid = $uid;
+    $row->card_code = $card_code;
+    drupal_write_record('users_cards', $row);
+  }
+}
+
+/**
+ * [timebit_services_users_cards_load description]
+ * @param  [type] $uid [description]
+ * @return [type]      [description]
+ */
+function timebit_services_users_cards_load($uid) {
+  $query = db_select('users_cards', 'uc');
+  $query->fields('uc');
+  $query->condition('uid', $uid);
+  $result = $query->execute();
+  $row = $result->fetchObject();
+
+  return $row;
+}
+
+/**
+ * [timebit_services_users_cards_load_card_code description]
+ * @param  [type] $uid [description]
+ * @return [type]      [description]
+ */
+function timebit_services_users_cards_load_card_code($uid) {
+  $user_card = timebit_services_users_cards_load($uid);
+  if ($user_card) {
+    return $user_card->card_code;
+  }
+  else {
+    return NULL;
+  }
+}
+
+/**
+ * [timebit_services_users_cards_load description]
+ * @param  [type] $uid [description]
+ * @return [type]      [description]
+ */
+function timebit_services_users_cards_load_by_card_code($card_code) {
+  $query = db_select('users_cards', 'uc');
+  $query->fields('uc');
+  $query->condition('card_code', $card_code);
+  $result = $query->execute();
+  $row = $result->fetchObject();
+
+  return $row;
+}

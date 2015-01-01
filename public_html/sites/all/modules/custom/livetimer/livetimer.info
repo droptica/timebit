@@ -1,0 +1,8 @@
+name = Live Timer
+description = Display live time from given date.
+core = 7.x
+package = APP
+version = "7.x-1.0-beta1"
+project status url = http://updates-drupal.droptica.com/timebit/release-history
+
+

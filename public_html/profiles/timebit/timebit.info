@@ -1,0 +1,6 @@
+name = TIMEBIT
+description = TIMEBIT
+version = VERSION
+core = 7.x
+
+dependencies[] = application

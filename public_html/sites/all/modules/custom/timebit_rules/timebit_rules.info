@@ -1,0 +1,9 @@
+name = "TIMEBIT rules"
+description = "TIMEBIT rules"
+core = "7.x"
+package = APP
+project = "timebit_rules"
+project status url = http://updates-drupal.droptica.com/timebit/release-history
+
+dependencies[] = rules
+dependencies[] = timebit_model

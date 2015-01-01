@@ -1,0 +1,59 @@
+<?php
+
+/**
+ * Implements hook_help().
+ */
+function liveclock_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#liveclock':
+      $output = '';
+      $output .= '<p>' . t('Display live server time in block.') . '</p>';
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function liveclock_block_info() {
+  $blocks = array();
+  $blocks['currenttime'] = array(
+    'info' => t('Current server time'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function liveclock_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'currenttime':
+      $block['subject'] = t('Current server time');
+      $block['content'] = liveclock_clock();
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Block content - current time.
+ *
+ * @return
+ *   HTML output.
+ */
+function liveclock_clock() {
+  $output = '';
+
+  drupal_add_js(array(
+      'liveclock' => array(
+          'time' => date('c'),
+          )), 'setting');
+
+  $output .= '<span class="live-server-clock"></span>';
+  drupal_add_js(drupal_get_path('module', 'liveclock') . '/js/liveclock.js');
+
+  return $output;
+}

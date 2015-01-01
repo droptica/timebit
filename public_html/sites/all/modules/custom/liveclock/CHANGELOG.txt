@@ -1,0 +1,4 @@
+// $Id$
+Lice Server Clock 6.x-1.0-beta1, 2011-06-11
+----------------------
+- First release

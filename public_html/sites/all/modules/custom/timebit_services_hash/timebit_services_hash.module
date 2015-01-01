@@ -1,0 +1,65 @@
+<?php
+/**
+ * @file
+ * Main module file.
+ */
+
+define("TIMEBIT_SERVICES_HASH_DEFAULT", "oNyR7Vfyf8E37pwZc6djWcfgp6kfuCTzopabrNu8emBjoyXM");
+
+/**
+ * Implements hook_help().
+ */
+function timebit_services_hash_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#timebit_services_hash':
+      $output = '';
+      $output .= '<p>' . t('timebit_services_hash') . '</p>';
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function timebit_services_hash_permission() {
+  return array(
+    'administer timebit services api hash' => array(
+      'title' => t('Administer timebit services api hash'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function timebit_services_hash_menu() {
+  $items = array();
+  $items['admin/application/timebit_services_hash'] = array(
+    'title' => 'Timebit services hash',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('timebit_services_hash_settings_page'),
+    'file' => 'timebit_services_hash.admin.inc',
+    'access arguments' => array('administer timebit services api hash'),
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 50,
+  );
+  return $items;
+}
+
+/**
+ * Check if hash is correct.
+ *
+ * @param $hash
+ *   Hash code.
+ *
+ * @return
+ *   Bool.
+ */
+function timebit_services_hash_is_correct($hash) {
+  if ($hash == variable_get('timebit_services_hash', TIMEBIT_SERVICES_HASH_DEFAULT)) {
+    return TRUE;
+  }
+  else {
+    return FALSE;
+  }
+}

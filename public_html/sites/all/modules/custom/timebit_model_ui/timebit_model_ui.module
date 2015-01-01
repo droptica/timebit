@@ -1,0 +1,173 @@
+<?php
+/**
+ * @file
+ * Main module file.
+ */
+
+/**
+ * Implements hook_help().
+ */
+function timebit_model_ui_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#timebit_model_ui':
+      $output .= '<p>' . t('TODO') . ':</p>';
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function timebit_model_ui_block_info() {
+  $blocks['control'] = array(
+    'info' => t('TIMEBIT - Work control button'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  $blocks['status'] = array(
+    'info' => t('Status'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  $blocks['control_status'] = array(
+    'info' => t('Work control and status'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function timebit_model_ui_block_view($delta = '') {
+  global $user;
+  $block = array();
+  switch ($delta) {
+    case 'control_status':
+      $block['subject'] = t('Work control and status');
+      $block['content'] = timebit_model_ui_workc_control_and_status_block();
+      break;
+    case 'control':
+      $block['subject'] = t('Work control button');
+      $block['content'] = $user->uid == 0 ? '' : drupal_get_form('timebit_model_ui_log_work_form');
+      break;
+    case 'status':
+      $block['subject'] = t('Status');
+      $block['content'] = timebit_model_ui_status_block();
+      break;
+  }
+  return $block;
+}
+
+
+
+/**
+ * Form definition
+ *
+ * @return
+ *   Form array.
+ */
+function timebit_model_ui_log_work_form() {
+  $form = array();
+
+  $status = timebit_model_log_get_user_status();
+  if ($status == WORK_STOPPED) {
+    $title = t('Start work');
+    $class = 'start-work';
+    $attributes = array();
+  }
+  elseif ($status == WORK_IN_PROGRESS) {
+    $title = t('Stop work');
+    $class = 'stop-work';
+    $attributes = array(
+      'onclick' => 'return confirm(\'' . t('Do you want to finish work?') . '\');'
+    );
+  }
+
+  $form['log'] = array(
+      '#prefix' => '<div class="button-log-work clearfix ' . $class . '"><div class="button-left"></div>',
+      '#suffix' => '<div class="button-right"></div></div>',
+      '#type' => 'submit',
+      '#value' => $title,
+      '#attributes' => $attributes,
+  );
+  return $form;
+}
+
+/**
+ * Form submit function.
+ * @param $form
+ *   Form array.
+ * @param $form_state
+ *   Form state array.
+ */
+function timebit_model_ui_log_work_form_submit($form, $form_state) {
+  timebit_model_log_switch();
+}
+
+
+/**
+ * Block content.
+ *
+ * @return
+ *   HTML output.
+ */
+function timebit_model_ui_status_block() {
+  global $user;
+  if ($user->uid == 0) {
+    return '';
+  }
+  $output = '';
+  $status = timebit_model_log_get_user_status();
+  $status_class = ($status == WORK_IN_PROGRESS ) ? 'working' : 'not-working';
+  $status_title = ($status == WORK_IN_PROGRESS ) ? t('Working') : t('Not working');
+
+  $output .= '
+    <ul class="user-menu-panel">
+      <li class="user-name first"><span>' . t('You are logged in as') . ':</span> ' . $user->name . '</li>
+      <li class="user-settings">' . l(t('Account settings'), 'user/' . $user->uid . '/edit') . '</li>
+      <li class="user-logout last">' . l(t('Log out'), 'user/logout') . '</li>
+    </ul>';
+
+  $output .= '
+    <ul class="user-menu-status">
+      <li class="server-time first"><span>' . t('Server time') . ':</span> ' . liveclock_clock() . '</li>
+      <li class="user-status last"><span>' . t('Status') . '</span>: <span class="' . $status_class . '">' . $status_title . '</span></li>
+    </ul><span class="user-info-panel"></span>';
+
+  if ($status == WORK_IN_PROGRESS) {
+    $timebit_log = timebit_model_log_get_log_in_progress();
+    $time_string = date("Y-m-d H:i:s", $timebit_log->timestamp_start);
+
+    $output .= '
+    <ul class="user-menu-work">
+      <li class="server-time first"><span>' . t('Work started at') . ':</span> ' . $time_string . '</li>
+      <li class="user-status last"><span>' . t('Actual work time') . '</span>: ' . livetimer_timer(new DateTime($time_string)) . '</li>
+    </ul><span class="user-info-panel"></span>';
+  }
+  return $output;
+}
+
+/**
+ * Block content.
+ *
+ * @return
+ *   HTML output.
+ */
+function timebit_model_ui_workc_control_and_status_block() {
+  global $user;
+  if ($user->uid == 0) {
+    return '';
+  }
+
+  $output = '';
+
+  $form = drupal_get_form('timebit_model_ui_log_work_form');
+  $form_render = render($form);
+
+  $output = '
+<div class="row">
+  <div class="small-12 large-6 columns">' . $form_render . '</div>
+  <div class="small-12 large-6 columns">' . timebit_model_ui_status_block() . '</div>
+</div>';
+
+  return $output;
+}

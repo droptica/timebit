@@ -1,0 +1,47 @@
+<?php
+
+/**
+ * Implements hook_timebit_log_switch.
+ */
+function timebit_rules_timebit_log_switch($row, $status) {
+  $tlid = isset($row->tlid) ? $row->tlid : 0;
+  $uid = isset($row->uid) ? $row->uid : 0;
+  $timestamp_start = isset($row->timestamp_start) ? $row->timestamp_start : 0;
+  $timestamp_stop = isset($row->timestamp_stop) ? $row->timestamp_stop : 0;
+
+  rules_invoke_event('timebit_rules_timebit_log_switch_event', $tlid, $uid, $timestamp_start, $timestamp_stop, $status);
+}
+
+/**
+ * Implements hook_rules_event_info.
+ */
+function timebit_rules_rules_event_info() {
+  return array(
+    'timebit_rules_timebit_log_switch_event' => array(
+      'label' => t('Timebit log switch'),
+      'module' => 'timebit_rules',
+      'variables' => array(
+        'tlid' => array(
+          'type' => 'integer',
+          'label' => t('tlid'),
+         ),
+        'uid' => array(
+          'type' => 'integer',
+          'label' => t('uid'),
+         ),
+        'timestamp_start' => array(
+          'type' => 'integer',
+          'label' => t('timestamp_start'),
+         ),
+        'timestamp_stop' => array(
+          'type' => 'integer',
+          'label' => t('timestamp_stop'),
+         ),
+        'status' => array(
+          'type' => 'text',
+          'label' => t('status'),
+        ),
+      ),
+    ),
+  );
+}

@@ -1,0 +1,6 @@
+name = "TIMEBIT model"
+description = "TIMEBIT model"
+core = "7.x"
+package = APP
+project = "timebit_model"
+project status url = http://updates-drupal.droptica.com/timebit/release-history

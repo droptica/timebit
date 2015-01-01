@@ -1,0 +1,141 @@
+<?php
+
+define("WORK_IN_PROGRESS", 1);
+define("WORK_STOPPED", 0);
+
+/**
+ * Implements hook_views_api().
+ */
+function timebit_model_views_api($module = NULL, $api = NULL) {
+  return array("api" => "3.0");
+}
+
+/**
+ * Load one time log record.
+ *
+ * @param $tlid
+ *
+ * @return
+ *   Log time object.
+ */
+function  timebit_model_log_load($tlid) {
+  $timebit_log = &drupal_static(__FUNCTION__);
+  if (!isset($timebit_log[$tlid])) {
+    $query = db_select('timebit_logs', 'tl');
+    $query->fields('tl');
+    $query->condition('tlid', $tlid);
+    $result = $query->execute();
+    $timebit_log[$tlid] = $result->fetchObject();
+  }
+
+  return $timebit_log[$tlid];
+}
+
+/**
+ * Create new time log.
+ * @param $account
+ *   User object.
+ *
+ * @return
+ *   Saved object.
+ */
+function timebit_model_log_start($account = '') {
+  $account = applitaction_get_account($account);
+
+  $row = new stdClass();
+  $row->uid = $account->uid;
+  $row->timestamp_start = REQUEST_TIME;
+  drupal_write_record('timebit_logs', $row);
+
+  return $row;
+}
+
+/**
+ * Stop time log.
+ * @param  $tlid
+ *   Time log ID
+ * @param $account
+ *   User object.
+ *
+ * @return
+ *   Saved object.
+ */
+function timebit_model_log_stop($tlid, $account = '') {
+  $account = applitaction_get_account($account);
+
+  $row = new stdClass();
+  $row->tlid = $tlid;
+  $row->uid = $account->uid;
+  $row->timestamp_stop = REQUEST_TIME;
+  drupal_write_record('timebit_logs', $row, array('tlid'));
+  return $row;
+}
+
+/**
+ * Switch user log time (start/stop).
+ *
+ * @param $account
+ *
+ * @return
+ */
+function timebit_model_log_switch($account = '') {
+  $account = applitaction_get_account($account);
+  $status = timebit_model_log_get_user_status($account);
+  if ($status == WORK_IN_PROGRESS) {
+    $timebit_log = timebit_model_log_get_log_in_progress($account);
+    $tlid = $timebit_log->tlid;
+    $row = timebit_model_log_stop($tlid, $account);
+  }
+  else {
+    $row = timebit_model_log_start($account);
+  }
+
+  module_invoke_all('timebit_log_switch', $row, $status);
+
+  return $row;
+}
+
+/**
+ * Get user log time status.
+ *
+ * @param $account
+ *   User object.
+ *
+ * @return
+ *   WORK_IN_PROGRESS or WORK_STOPPED
+ */
+function timebit_model_log_get_user_status($account = '') {
+  $account = applitaction_get_account($account);
+
+  if (timebit_model_log_get_log_in_progress($account)) {
+    return WORK_IN_PROGRESS;
+  }
+  else {
+    return WORK_STOPPED;
+  }
+}
+
+/**
+ * Get log in progress for account.
+ *
+ * @param $account
+ *   User object.
+ *
+ * @return
+ *   Time log object or NULL.
+ */
+function timebit_model_log_get_log_in_progress($account = '') {
+  $account = applitaction_get_account($account);
+
+  $query = db_select('timebit_logs', 'tl');
+  $query->fields('tl');
+  $query->condition('uid', $account->uid);
+  $query->condition('timestamp_stop', 0);
+  $query->range(0, 1);
+  $result = $query->execute();
+
+  $project = NULL;
+  $project = $result->fetchObject();
+
+  return $project;
+}

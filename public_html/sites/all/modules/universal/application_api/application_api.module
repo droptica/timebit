@@ -1,0 +1,102 @@
+<?php
+
+
+
+/**
+ * Implements hook_help().
+ */
+function application_api_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#application':
+      $output = '';
+      $output .= '<p>' . t('Application main module') . '</p>';
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function application_api_permission() {
+  return array(
+    'administer application' => array(
+      'title' => t('Administer application'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function application_api_menu() {
+  $items = array();
+  // Placeholder for application project page.
+  $items['admin/application'] = array(
+    'title' => 'Application',
+    'page callback' => 'application_api_admin_page',
+    'file' => 'application_api.pages.inc',
+    'access arguments' => array('administer application'),
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 50,
+  );
+  return $items;
+}
+
+/**
+* Revert specified features.
+*/
+function application_api_features_revert($modules) {
+  module_load_include('inc', 'features', 'features.export');
+  features_include();
+  foreach ($modules as $module) {
+    if (($feature = feature_load($module, TRUE)) && module_exists($module)) {
+      $components = array();
+      // Forcefully revert all components of a feature.
+      foreach (array_keys($feature->info['features']) as $component) {
+        if (features_hook($component, 'features_revert')) {
+          $components[] = $component;
+        }
+      }
+    }
+    foreach ($components as $component) {
+      features_revert(array($module => array($component)));
+    }
+  }
+}
+
+/**
+ * Load new translations from .po files.
+ */
+function application_api_update_translations() {
+    include_once './includes/locale.inc';
+    // Add language
+    //locale_add_language('pl', 'Polish', 'Polski', LANGUAGE_LTR, '', '', TRUE, TRUE);
+    // Load translations.
+    $files = file_scan_directory('sites/all', '/pl.po/');
+    foreach ($files as $file) {
+        $file->filepath = $file->filename;
+        _locale_import_po($file, 'pl', LOCALE_IMPORT_KEEP, 'default');
+    }
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+
+function application_api_menu_alter(&$items) {
+
+  $paths = variable_get('application_api_paths_to_remove', array()); //@TODO - create configuration form.
+  $front = variable_get('site_frontpage', 'node');
+  //drupal_set_message('$front: ' . $front );
+  if ($front != 'node') {
+    $paths[] = 'node';
+  }
+  // Add other paths to remove.
+  // ...
+  if ($paths) {
+    foreach ($paths as $path) {
+      unset($items[$path]);
+    }
+  }
+}
+

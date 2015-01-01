@@ -1,0 +1,9 @@
+name = "TIMEBIT model UI"
+description = "TIMEBIT model UI"
+core = "7.x"
+package = APP
+project = "timebit_model_ui"
+project status url = http://updates-drupal.droptica.com/timebit/release-history
+
+dependencies[] = liveclock
+dependencies[] = livetimer

@@ -1,0 +1,57 @@
+.top-bar {
+  background: $blue-1;
+}
+
+.top-bar-section ul {
+  background: $blue-1;
+  a {
+    background: $blue-1 !important;
+  }
+}
+
+.l-header-region.row {
+   background: $blue-1;
+   color: white;
+
+}
+
+.block-timebit-model-ui-control-status,
+.block-timebit-model-ui-status {
+  border-top: 1px solid black;
+  a {
+    color: white !important;
+    text-decoration: underline;
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+    text-align: right;
+    li {
+      display: inline;
+      padding: 0 1em;
+      span {
+        font-weight: bold;
+      }
+    }
+    span.working {
+      color: #58FA58;
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+    span.not-working {
+      color: #FA8258;
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+  }
+}
+
+
+.block-timebit-model-ui-control-status,
+.block-timebit-model-ui-control{
+  form {
+    text-align: center;
+    font-size: 1.2em;
+    margin: 0.5em;
+  }
+}

@@ -1,0 +1,8 @@
+name = TIMEBIT services hash
+description = TIMEBIT services hash
+core = 7.x
+package = APP
+version = 7.x-1.0-beta1
+project = timebit_services_hash
+
+project status url = http://updates-drupal.droptica.com/timebit/release-history

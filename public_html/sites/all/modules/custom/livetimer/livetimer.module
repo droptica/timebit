@@ -1,0 +1,60 @@
+<?php
+
+/**
+ * Implements hook_help().
+ */
+function livetimer_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#livetimer':
+      $output = '';
+      $output .= '<p>' . t('Display live server time in block.') . '</p>';
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function livetimer_block_info() {
+  $blocks = array();
+  $blocks['timer'] = array(
+    'info' => t('Timer'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function livetimer_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'timer':
+      $block['subject'] = t('Timer');
+      $block['content'] = livetimer_timer();
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Live timer.
+ *
+ * @return
+ *   HTML output.
+ */
+function livetimer_timer($date, $class = 'livetimer-timer') {
+  $output = '';
+  drupal_add_js(array(
+      'livetimer' => array(
+          'currenttime' => date('c'),
+          'starttime' => $date->format('c'),
+          'classname' => $class,
+          )), 'setting');
+
+  $output .= '<span class="' . $class . '"></span>';
+  drupal_add_js(drupal_get_path('module', 'livetimer') . '/js/livetimer.js');
+
+  return $output;
+}

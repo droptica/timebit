@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Timebit Views feature.
+ */
+
+include_once 'timebit_views.features.inc';

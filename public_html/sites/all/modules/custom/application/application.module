@@ -1,0 +1,45 @@
+<?php
+/**
+ * @file
+ * Code for the Application feature.
+ */
+
+include_once 'application.features.inc';
+
+/**
+ * Implements hook_help().
+ */
+function application_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#application':
+      $output = '';
+      $output .= '<p>' . t('Application main module') . '</p>';
+      return $output;
+  }
+}
+
+/**
+ * List of all features.
+ */
+function application_features_list() {
+  $features = array(
+    'application',
+    'timebit_views',
+    'layout',
+  );
+  return $features;
+}
+
+/**
+ * Returns account or current logged in user.
+ *
+ * @param  [type] $account [description]
+ * @return [type]          [description]
+ */
+function applitaction_get_account($account) {
+  if ($account == '') {
+    global $user;
+    $account = $user;
+  }
+  return $account;
+}

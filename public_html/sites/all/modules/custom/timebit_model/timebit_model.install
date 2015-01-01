@@ -1,0 +1,39 @@
+<?php
+
+/**
+ * @file
+ * Install file.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function timebit_model_schema() {
+  $schema['timebit_logs'] = array(
+    'description' => 'Time entries.',
+    'fields' => array(
+      'tlid' => array(
+        'description' => 'pid',
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'description' => 'User ID',
+        'type' => 'int',
+        'default' => 0,
+      ),
+      'timestamp_start' => array(
+        'description' => 'Timestamp start',
+        'type' => 'int',
+        'default' => 0,
+      ),
+      'timestamp_stop' => array(
+        'description' => 'Timestamp stop',
+        'type' => 'int',
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('tlid'),
+  );
+  return $schema;
+}
