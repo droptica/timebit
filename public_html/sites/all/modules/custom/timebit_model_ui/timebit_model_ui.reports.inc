@@ -207,7 +207,7 @@ function _timebit_model_ui_reports_page_summary($data) {
   $output .= '<h2 class="summary-header">' . t('Summary') . '</h2>';
   foreach ($summary as $uid => $seconds) {
     $name = user_load($uid)->name;
-    $time = gmdate("H:i:s", $seconds);
+    $time = timebit_model_seconds_to_hours($seconds);
     $output .= '<div class="summary-item"><span class="user-name">' . $name . '</span>: <span class="user-time">' . $time . '</span></div>';
   }
 

@@ -177,3 +177,13 @@ function timebit_model_log_get_by_date_and_uid($timestamp_start, $timestamp_stop
 
   return $ret;
 }
+
+/**
+ * Convert seconds to hours.
+ *
+ * @param $seconds
+ * @return float
+ */
+function timebit_model_seconds_to_hours($seconds) {
+  return round ($seconds / 3600, 2);
+}
