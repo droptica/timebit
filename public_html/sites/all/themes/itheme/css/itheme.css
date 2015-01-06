@@ -9113,43 +9113,43 @@ a.th {
   color: white;
 }
 
-/* line 18, ../scss/components/_fresh.scss */
+/* line 1, ../scss/components/blocks/_block-timebit-model-ui-control-status.scss */
 .block-timebit-model-ui-control-status,
 .block-timebit-model-ui-status {
   border-top: 1px solid black;
 }
-/* line 21, ../scss/components/_fresh.scss */
+/* line 4, ../scss/components/blocks/_block-timebit-model-ui-control-status.scss */
 .block-timebit-model-ui-control-status a,
 .block-timebit-model-ui-status a {
   color: white !important;
   text-decoration: underline;
 }
-/* line 25, ../scss/components/_fresh.scss */
+/* line 8, ../scss/components/blocks/_block-timebit-model-ui-control-status.scss */
 .block-timebit-model-ui-control-status ul,
 .block-timebit-model-ui-status ul {
   margin: 0;
   padding: 0;
   text-align: right;
 }
-/* line 29, ../scss/components/_fresh.scss */
+/* line 12, ../scss/components/blocks/_block-timebit-model-ui-control-status.scss */
 .block-timebit-model-ui-control-status ul li,
 .block-timebit-model-ui-status ul li {
   display: inline;
   padding: 0 1em;
 }
-/* line 32, ../scss/components/_fresh.scss */
+/* line 15, ../scss/components/blocks/_block-timebit-model-ui-control-status.scss */
 .block-timebit-model-ui-control-status ul li span,
 .block-timebit-model-ui-status ul li span {
   font-weight: bold;
 }
-/* line 36, ../scss/components/_fresh.scss */
+/* line 19, ../scss/components/blocks/_block-timebit-model-ui-control-status.scss */
 .block-timebit-model-ui-control-status ul span.working,
 .block-timebit-model-ui-status ul span.working {
   color: #58FA58;
   font-size: 1.1em;
   font-weight: bold;
 }
-/* line 41, ../scss/components/_fresh.scss */
+/* line 24, ../scss/components/blocks/_block-timebit-model-ui-control-status.scss */
 .block-timebit-model-ui-control-status ul span.not-working,
 .block-timebit-model-ui-status ul span.not-working {
   color: #FA8258;
@@ -9157,12 +9157,33 @@ a.th {
   font-weight: bold;
 }
 
-/* line 52, ../scss/components/_fresh.scss */
+/* line 35, ../scss/components/blocks/_block-timebit-model-ui-control-status.scss */
 .block-timebit-model-ui-control-status form,
 .block-timebit-model-ui-control form {
   text-align: center;
   font-size: 1.2em;
   margin: 0.5em;
+}
+
+/* line 43, ../scss/components/blocks/_block-timebit-model-ui-control-status.scss */
+#timebit-model-ui-log-work-form .button-log-work {
+  display: inline-block;
+  width: 180px;
+}
+/* line 48, ../scss/components/blocks/_block-timebit-model-ui-control-status.scss */
+#timebit-model-ui-log-work-form .log-description {
+  display: inline-block;
+}
+/* line 50, ../scss/components/blocks/_block-timebit-model-ui-control-status.scss */
+#timebit-model-ui-log-work-form .log-description label {
+  color: #ffffff;
+}
+/* line 54, ../scss/components/blocks/_block-timebit-model-ui-control-status.scss */
+#timebit-model-ui-log-work-form .log-description .form-item-log-description {
+  width: 200px;
+  float: left;
+  margin-left: 1em;
+  margin-top: 0;
 }
 
 /* line 4, ../scss/components/pages/_page-timebit-all-logs.scss */
@@ -9179,4 +9200,26 @@ a.th {
 /* line 16, ../scss/components/pages/_page-timebit-all-logs.scss */
 .page-timebit-all-logs form#timebit-model-ui-reports-page-filter-form .form-submit {
   margin: 2em 0 0 2em;
+}
+/* line 22, ../scss/components/pages/_page-timebit-all-logs.scss */
+.page-timebit-all-logs .summary .summary-item {
+  border-bottom: 1px solid #cccccc;
+  padding: 1em 0;
+}
+/* line 25, ../scss/components/pages/_page-timebit-all-logs.scss */
+.page-timebit-all-logs .summary .summary-item span.user-name {
+  display: inline-block;
+  width: 150px;
+}
+/* line 29, ../scss/components/pages/_page-timebit-all-logs.scss */
+.page-timebit-all-logs .summary .summary-item span.user-time {
+  display: inline-block;
+  text-align: right;
+  width: 150px;
+}
+/* line 37, ../scss/components/pages/_page-timebit-all-logs.scss */
+.page-timebit-all-logs .add-link {
+  clear: both;
+  float: left;
+  width: 100%;
 }

@@ -16,7 +16,6 @@ dependencies[] = layout
 dependencies[] = strongarm
 dependencies[] = timebit_model
 dependencies[] = timebit_model_ui
-dependencies[] = timebit_services
 dependencies[] = timebit_views
 dependencies[] = views
 dependencies[] = views_ui

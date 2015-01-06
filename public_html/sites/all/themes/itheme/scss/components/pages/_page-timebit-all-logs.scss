@@ -17,4 +17,26 @@
       margin: 2em 0 0 2em;
     }
   }
+
+  .summary{
+    .summary-item {
+      border-bottom: 1px solid $color2;
+      padding: 1em 0;
+      span.user-name {
+        display: inline-block;
+        width: 150px;
+      }
+      span.user-time {
+        display: inline-block;
+        text-align: right;
+        width: 150px;
+      }
+    }
+  }
+
+  .add-link{
+    clear: both;
+    float: left;
+    width: 100%;
+  }
 }
