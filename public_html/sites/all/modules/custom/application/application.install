@@ -82,3 +82,9 @@ function application_install() {
   variable_set('admin_theme', 'seven');
 }
 
+/**
+ * 2014-01-06.
+ */
+function application_update_7005() {
+  application_api_features_revert(application_features_list());
+}

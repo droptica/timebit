@@ -175,6 +175,7 @@ function _timebit_model_ui_reports_page_table_results_header() {
     t('UID'),
     t('Start'),
     t('Stop'),
+    t('Description'),
     t('Work time'),
     t('Name'),
 
