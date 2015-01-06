@@ -1,0 +1,20 @@
+.page-timebit-all-logs {
+  form#timebit-model-ui-reports-page-filter-form {
+
+    .form-submit,
+    .form-type-select.form-item-uid,
+    .container-inline-date {
+      float: left;
+      clear: none;
+
+    }
+
+    .form-type-select.form-item-uid {
+      margin-top: 2em;
+    }
+
+    .form-submit {
+      margin: 2em 0 0 2em;
+    }
+  }
+}
