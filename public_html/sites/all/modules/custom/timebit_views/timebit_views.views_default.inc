@@ -82,6 +82,11 @@ function timebit_views_views_default_views() {
   $handler->display->display_options['fields']['timestamp_stop']['label'] = 'Stop';
   $handler->display->display_options['fields']['timestamp_stop']['date_format'] = 'custom';
   $handler->display->display_options['fields']['timestamp_stop']['custom_date_format'] = 'Y-m-d H:i:s';
+  /* Field: timebit_logs: Time log description */
+  $handler->display->display_options['fields']['log_description']['id'] = 'log_description';
+  $handler->display->display_options['fields']['log_description']['table'] = 'timebit_logs';
+  $handler->display->display_options['fields']['log_description']['field'] = 'log_description';
+  $handler->display->display_options['fields']['log_description']['label'] = 'Description';
   /* Filter criterion: User: Current */
   $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
   $handler->display->display_options['filters']['uid_current']['table'] = 'users';
@@ -92,30 +97,6 @@ function timebit_views_views_default_views() {
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['path'] = 'timebit/my-logs';
-  $translatables['timebit_logs_my_logs'] = array(
-    t('Master'),
-    t('My time logs'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('« first'),
-    t('‹ previous'),
-    t('next ›'),
-    t('last »'),
-    t('User ID'),
-    t('tlid'),
-    t('.'),
-    t(','),
-    t('Start'),
-    t('Stop'),
-    t('Page'),
-  );
   $export['timebit_logs_my_logs'] = $view;
 
   return $export;

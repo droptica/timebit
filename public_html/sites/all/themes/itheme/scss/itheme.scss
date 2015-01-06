@@ -55,12 +55,17 @@
 @import "layout/triptych";
 @import "layout/footer";
 
+@import "colors";
+
 // Components
-// @import "components/buttons";
-// @import "components/type";
-// @import "components/forms";
-// @import "components/foundation-icons";
-@import "components/fresh";
+
+@import "components/*";
+@import "components/blocks/*";
+@import "components/menu/*";
+@import "components/nodes/*";
+@import "components/pages/*";
+@import "components/regions/*";
+@import "components/views/*";
 
 // Themes
 // @import "theme/button-light";

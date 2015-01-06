@@ -43,9 +43,9 @@ function application_install() {
     'timebit_model',
     'timebit_model_ui',
     'timebit_model_views',
-    'timebit_services',
-    'timebit_services_hash',
+
     'layout',
+    'masquerade',
   );
   module_enable($module_list);
   module_list(TRUE, FALSE);
@@ -69,8 +69,8 @@ function application_install() {
   menu_link_save($item);
 
   $item = array(
-    'link_path' => 'timebit/reports',
-    'link_title' => t('Reports'),
+    'link_path' => 'timebit/all-logs',
+    'link_title' => t('All logs'),
     'menu_name' => 'main-menu', // Menu machine name, for example: main-menu
     'weight' => 45,
     'plid' => 0, // Parent menu item, 0 if menu item is on top level
@@ -82,3 +82,17 @@ function application_install() {
   variable_set('admin_theme', 'seven');
 }
 
+/**
+ * 2014-01-06.
+ */
+function application_update_7005() {
+
+  //Enable modules.
+  $module_list = array(
+    'masquerade',
+  );
+  module_enable($module_list);
+  module_list(TRUE, FALSE);
+
+  application_api_features_revert(application_features_list());
+}

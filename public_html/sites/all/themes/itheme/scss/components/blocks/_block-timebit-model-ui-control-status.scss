@@ -1,0 +1,64 @@
+.block-timebit-model-ui-control-status,
+.block-timebit-model-ui-status {
+  border-top: 1px solid black;
+  a {
+    color: white !important;
+    text-decoration: underline;
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+    text-align: right;
+    li {
+      display: inline;
+      padding: 0 1em;
+      span {
+        font-weight: bold;
+      }
+    }
+    span.working {
+      color: #58FA58;
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+    span.not-working {
+      color: #FA8258;
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+  }
+}
+
+
+.block-timebit-model-ui-control-status,
+.block-timebit-model-ui-control{
+  form {
+    text-align: center;
+    font-size: 1.2em;
+    margin: 0.5em;
+  }
+}
+
+#timebit-model-ui-log-work-form{
+  .button-log-work{
+    display: inline-block;
+    width: 180px;
+  }
+
+  .log-description{
+    display: inline-block;
+    label {
+      color: $color_white;
+    }
+
+    .form-item-log-description{
+
+      width: 200px;
+      float: left;
+      margin-left: 1em;
+      margin-top: 0;
+    }
+  }
+
+
+}

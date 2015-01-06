@@ -18,7 +18,7 @@ function timebit_model_views_api($module = NULL, $api = NULL) {
  * @return
  *   Log time object.
  */
-function  timebit_model_log_load($tlid) {
+function timebit_model_log_load($tlid) {
   $timebit_log = &drupal_static(__FUNCTION__);
   if (!isset($timebit_log[$tlid])) {
     $query = db_select('timebit_logs', 'tl');
@@ -29,6 +29,19 @@ function  timebit_model_log_load($tlid) {
   }
 
   return $timebit_log[$tlid];
+}
+
+/**
+ * Delete time log.
+ *
+ * @param $tlid
+ * @return DatabaseStatementInterface
+ */
+function timebit_model_log_delete($tlid) {
+  $num_deleted = db_delete('timebit_logs')
+    ->condition('tlid', $tlid)
+    ->execute();
+  return $num_deleted;
 }
 
 /**
@@ -60,13 +73,14 @@ function timebit_model_log_start($account = '') {
  * @return
  *   Saved object.
  */
-function timebit_model_log_stop($tlid, $account = '') {
+function timebit_model_log_stop($tlid, $log_description, $account = '') {
   $account = applitaction_get_account($account);
 
   $row = new stdClass();
   $row->tlid = $tlid;
   $row->uid = $account->uid;
   $row->timestamp_stop = REQUEST_TIME;
+  $row->log_description = $log_description;
   drupal_write_record('timebit_logs', $row, array('tlid'));
   return $row;
 }
@@ -78,13 +92,13 @@ function timebit_model_log_stop($tlid, $account = '') {
  *
  * @return
  */
-function timebit_model_log_switch($account = '') {
+function timebit_model_log_switch($log_description = '', $account = '') {
   $account = applitaction_get_account($account);
   $status = timebit_model_log_get_user_status($account);
   if ($status == WORK_IN_PROGRESS) {
     $timebit_log = timebit_model_log_get_log_in_progress($account);
     $tlid = $timebit_log->tlid;
-    $row = timebit_model_log_stop($tlid, $account);
+    $row = timebit_model_log_stop($tlid, $log_description,  $account);
   }
   else {
     $row = timebit_model_log_start($account);

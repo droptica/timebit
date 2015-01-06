@@ -4,6 +4,12 @@
  * Main module file.
  */
 
+define('TIMEBIT_MODEL_MODULE_URI', 'timebit-logs');
+define('TIMEBIT_MODEL_MODULE_URI_ARG_POSITION', '1');
+
+define('TIMEBIT_MODEL_MODULE_ALL_LOGS_URI', 'timebit/all-logs');
+
+
 /**
  * Implements hook_help().
  */
@@ -20,27 +26,50 @@ function timebit_model_ui_help($path, $arg) {
  */
 function timebit_model_ui_permission() {
   return array(
-    'access reports page' => array(
-      'title' => t('Access reports page'),
+    'administer time logs' => array(
+      'title' => t('Administer time logs'),
     ),
   );
 }
-
 
 /**
  * Implements hook_menu().
  */
 function timebit_model_ui_menu() {
-  $items['timebit/reports'] = array(
-    'title' => 'Reports',
+  $items[TIMEBIT_MODEL_MODULE_ALL_LOGS_URI] = array(
+    'title' => 'All time logs',
     'page callback' => 'timebit_model_ui_reports_page',
-    'access arguments' => array('access reports page'),
-    'file' => 'timebit_model_ui.reports.inc',
+    'access arguments' => array('administer time logs'),
+    'file' => 'timebit_model_ui.pages.inc',
   );
+
+  $items[TIMEBIT_MODEL_MODULE_URI . '/add'] = array(
+    'title' => 'Add new time log',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('timebit_model_ui_item_form'),
+    'access arguments' => array('administer time logs'),
+    'type' => MENU_LOCAL_ACTION,
+    'file' => 'timebit_model_ui.pages.inc',
+  );
+
+  $items[TIMEBIT_MODEL_MODULE_URI . '/%/edit'] = array(
+    'title' => 'Edit time log',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('timebit_model_ui_item_form'),
+    'access arguments' => array('administer time logs'),
+    'file' => 'timebit_model_ui.pages.inc',
+  );
+
+  $items[TIMEBIT_MODEL_MODULE_URI . '/%/delete'] = array(
+    'title' => 'Delete time log',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('timebit_model_ui_item_form_delete_form'),
+    'access arguments' => array('administer time logs'),
+    'file' => 'timebit_model_ui.pages.inc',
+  );
+
   return $items;
 }
-
-
 
 /**
  * Implements hook_block_info().
@@ -116,6 +145,17 @@ function timebit_model_ui_log_work_form() {
       '#value' => $title,
       '#attributes' => $attributes,
   );
+
+  if ($status == WORK_IN_PROGRESS) {
+    $form['log_description'] = array(
+      '#prefix' => '<div class="log-description clearfix">',
+      '#suffix' => '</div>',
+      '#type' => 'textarea',
+      '#title' => t('Time log description'),
+
+    );
+  }
+
   return $form;
 }
 
@@ -127,7 +167,14 @@ function timebit_model_ui_log_work_form() {
  *   Form state array.
  */
 function timebit_model_ui_log_work_form_submit($form, $form_state) {
-  timebit_model_log_switch();
+  if (isset($form_state['values']['log_description'])) {
+    $log_description = $form_state['values']['log_description'];
+  }
+  else {
+    $log_description = '';
+  }
+
+  timebit_model_log_switch($log_description);
 }
 
 
