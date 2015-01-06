@@ -32,8 +32,30 @@ function timebit_model_schema() {
         'type' => 'int',
         'default' => 0,
       ),
+      'log_description' => array(
+        'type' => 'text',
+        'not null' => FALSE,
+        'size' => 'big',
+        'description' => 'Time log description.',
+      ),
     ),
     'primary key' => array('tlid'),
   );
   return $schema;
+}
+
+
+/**
+ * New column in database.
+ */
+function timebit_model_update_7002() {
+  // New columns in db table.
+  $spec = array(
+    'type' => 'text',
+    'not null' => FALSE,
+    'size' => 'big',
+    'description' => 'Time log description.',
+  );
+  // table name, column name, column data
+  db_add_field('timebit_logs', 'log_description', $spec);
 }

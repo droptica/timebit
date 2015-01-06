@@ -82,5 +82,14 @@ function timebit_model_views_data() {
     ),
   );
 
+  $data['timebit_logs']['log_description'] = array(
+    'title' => t('Time log description'),
+    'help' => t('Time log description'),
+    'field' => array(
+      'handler' => 'views_handler_field',
+      'click sortable' => TRUE,
+    ),
+  );
+
   return $data;
 }
