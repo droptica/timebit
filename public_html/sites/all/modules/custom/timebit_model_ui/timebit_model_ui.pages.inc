@@ -18,7 +18,14 @@ function timebit_model_ui_reports_page() {
     $uid = $_GET['uid'];
   }
   else {
-    $uid = -1;
+    if (user_access('administer time logs')) {
+      $uid = -1;
+    }
+    else {
+      global $user;
+      $uid = $user->uid;
+    }
+
   }
 
 
@@ -85,12 +92,15 @@ function timebit_model_ui_reports_page_filter_form($form, $form_state) {
     '#date_year_range' => '-3:+3',
   );
 
-  $form['uid'] = array(
-    '#type' => 'select',
-    '#title' => t('User'),
-    '#options' => _timebit_model_ui_reports_page_get_users(),
-    '#default_value' => isset($_GET['uid']) ? $_GET['uid'] : -1,
-  );
+
+  if (user_access('administer time logs')) {
+    $form['uid'] = array(
+      '#type' => 'select',
+      '#title' => t('User'),
+      '#options' => _timebit_model_ui_reports_page_get_users(),
+      '#default_value' => isset($_GET['uid']) ? $_GET['uid'] : -1,
+    );
+  }
 
   $form['actions']['submit'] = array(
     '#type' => 'submit',
@@ -107,11 +117,25 @@ function timebit_model_ui_reports_page_filter_form($form, $form_state) {
 function timebit_model_ui_reports_page_filter_form_submit($form, $form_state) {
   $values = $form_state['values'];
 
+  if (isset($values['uid'])) {
+    $uid = $values['uid'];
+  }
+  else {
+    if (user_access('administer time logs')) {
+      $uid = -1;
+    }
+    else {
+      global $user;
+      $uid = $user->uid;
+    }
+  }
+
+
   drupal_goto(TIMEBIT_MODEL_MODULE_ALL_LOGS_URI, array(
     'query' => array(
       'date_from' => strtotime($values['date_from']), // TODO - check timezone.
       'date_to' => strtotime($values['date_to']),
-      'uid' => $values['uid'],
+      'uid' => $uid,
     )
   ));
 }
@@ -157,8 +181,11 @@ function _timebit_model_ui_reports_page_table_results($data) {
       $row['timestamp_start'] = format_date($row['timestamp_start'], 'short');
       $row['timestamp_stop'] = format_date($row['timestamp_stop'], 'short');
       $row['name'] = l(user_load($row['uid'])->name, 'user/' . $row['uid']);
-      $row['edit'] = l(t('Edit'), TIMEBIT_MODEL_MODULE_URI . '/' . $row['tlid'] . '/edit');
-      $row['delete'] = l(t('Delete'), TIMEBIT_MODEL_MODULE_URI . '/' . $row['tlid'] . '/delete');
+
+      if (user_access('administer time logs')) {
+        $row['edit'] = l(t('Edit'), TIMEBIT_MODEL_MODULE_URI . '/' . $row['tlid'] . '/edit');
+        $row['delete'] = l(t('Delete'), TIMEBIT_MODEL_MODULE_URI . '/' . $row['tlid'] . '/delete');
+      }
 
       unset($row['uid']);
 
@@ -188,10 +215,12 @@ function _timebit_model_ui_reports_page_table_results_header() {
     t('Description'),
     t('Work time'),
     t('Name'),
-    t('Edit'),
-    t('Delete'),
-
   );
+
+  if (user_access('administer time logs')) {
+    $header[] = t('Edit');
+    $header[] = t('Delete');
+  }
   return $header;
 }
 
