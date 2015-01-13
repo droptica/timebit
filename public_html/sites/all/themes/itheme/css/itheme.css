@@ -9223,3 +9223,26 @@ a.th {
   float: left;
   width: 100%;
 }
+
+/* line 2, ../scss/components/pages/_page-timebit-live-status.scss */
+.live-status-info .live-status-item {
+  width: 100%;
+  float: left;
+  clear: both;
+  padding: 1em 0;
+  border-bottom: 1px solid #000000;
+  margin-bottom: 1em;
+}
+/* line 11, ../scss/components/pages/_page-timebit-live-status.scss */
+.live-status-info .live-status-item > div {
+  width: 33%;
+  float: left;
+}
+/* line 16, ../scss/components/pages/_page-timebit-live-status.scss */
+.live-status-info .live-status-item .live-status-item-status.not-working {
+  color: #FA8258;
+}
+/* line 19, ../scss/components/pages/_page-timebit-live-status.scss */
+.live-status-info .live-status-item .live-status-item-status.working {
+  color: #58FA58;
+}

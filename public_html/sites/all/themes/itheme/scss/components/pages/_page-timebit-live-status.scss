@@ -1,0 +1,23 @@
+.live-status-info{
+  .live-status-item {
+    width: 100%;
+    float: left;
+    clear: both;
+
+    padding: 1em 0;
+    border-bottom: 1px solid $color1;
+    margin-bottom: 1em;
+
+    > div{
+      width: 33%;
+      float: left;
+    }
+
+    .live-status-item-status.not-working{
+      color: $color3;
+    }
+    .live-status-item-status.working{
+      color: $color4;
+    }
+  }
+}
