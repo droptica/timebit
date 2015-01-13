@@ -397,3 +397,46 @@ function timebit_model_ui_item_form_delete_form_submit($form, &$form_state) {
 
   $form_state['redirect'] = TIMEBIT_MODEL_MODULE_ALL_LOGS_URI;
 }
+
+/**
+ * Page callback.
+ */
+function timebit_model_ui_live_status_page() {
+  $output = '';
+
+  $users = _timebit_model_ui_reports_page_get_users();
+  if (isset($users[-1])) {
+    unset($users[-1]);
+  }
+
+  $output .= '<div class="live-status-info">';
+  foreach ($users as $uid => $name) {
+    $account = user_load($uid);
+
+    $status_code = timebit_model_log_get_user_status($account);
+
+    if ($status_code == WORK_IN_PROGRESS) {
+      $status_title = t('Working');
+      $status_class = 'working';
+      $log_in_progress = timebit_model_log_get_log_in_progress($account);
+      $start_time = t('Start') . ': ' . format_date($log_in_progress->timestamp_start, 'short');
+
+    }
+    else {
+      $status_title = t('Not working');
+      $status_class = 'not-working';
+      $start_time = '';
+    }
+
+
+    $output .= '<div class="live-status-item">';
+    $output .= '<div class="live-status-item-user">' . l($name, 'user/' . $uid) . '</div>';
+    $output .= '<div class="live-status-item-status ' . $status_class . ' ">' . $status_title . '</div>';
+    $output .= '<div class="live-status-item-last-log">' . $start_time . '</div>';
+    $output .= '</div>';
+  }
+
+  $output .= '</div>';
+  
+  return $output;
+}

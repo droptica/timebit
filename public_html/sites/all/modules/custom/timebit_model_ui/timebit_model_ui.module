@@ -71,6 +71,13 @@ function timebit_model_ui_menu() {
     'file' => 'timebit_model_ui.pages.inc',
   );
 
+  $items['timebit/live-status'] = array(
+    'title' => 'Live status',
+    'page callback' => 'timebit_model_ui_live_status_page',
+    'access arguments' => array('administer time logs'),
+    'file' => 'timebit_model_ui.pages.inc',
+  );
+
   return $items;
 }
 
