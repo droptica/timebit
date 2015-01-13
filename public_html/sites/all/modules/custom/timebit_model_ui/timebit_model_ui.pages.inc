@@ -437,6 +437,6 @@ function timebit_model_ui_live_status_page() {
   }
 
   $output .= '</div>';
-  
+
   return $output;
 }
