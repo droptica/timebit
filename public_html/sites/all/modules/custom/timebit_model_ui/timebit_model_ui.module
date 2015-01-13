@@ -29,6 +29,9 @@ function timebit_model_ui_permission() {
     'administer time logs' => array(
       'title' => t('Administer time logs'),
     ),
+    'show my time logs' => array(
+      'title' => t('Show my time logs'),
+    ),
   );
 }
 
@@ -39,7 +42,7 @@ function timebit_model_ui_menu() {
   $items[TIMEBIT_MODEL_MODULE_ALL_LOGS_URI] = array(
     'title' => 'All time logs',
     'page callback' => 'timebit_model_ui_reports_page',
-    'access arguments' => array('administer time logs'),
+    'access arguments' => array('show my time logs'),
     'file' => 'timebit_model_ui.pages.inc',
   );
 
