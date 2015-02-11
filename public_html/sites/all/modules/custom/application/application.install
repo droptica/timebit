@@ -112,3 +112,12 @@ function application_update_7007() {
   // Flush caches.
   drupal_flush_all_caches();
 }
+
+
+/**
+ * 2014-02-11.
+ */
+function application_update_7008() {
+  // Flush caches.
+  drupal_flush_all_caches();
+}
