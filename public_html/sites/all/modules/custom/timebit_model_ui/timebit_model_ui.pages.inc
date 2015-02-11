@@ -182,6 +182,8 @@ function _timebit_model_ui_reports_page_table_results($data) {
       $row['timestamp_stop'] = format_date($row['timestamp_stop'], 'short');
       $row['name'] = l(user_load($row['uid'])->name, 'user/' . $row['uid']);
 
+      
+
       if (user_access('administer time logs')) {
         $row['edit'] = l(t('Edit'), TIMEBIT_MODEL_MODULE_URI . '/' . $row['tlid'] . '/edit');
         $row['delete'] = l(t('Delete'), TIMEBIT_MODEL_MODULE_URI . '/' . $row['tlid'] . '/delete');
@@ -224,7 +226,7 @@ function _timebit_model_ui_reports_page_table_results_header() {
   return $header;
 }
 
-/**
+/**l
  * Return summary.
  *
  * @param $data
