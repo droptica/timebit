@@ -177,12 +177,26 @@ function _timebit_model_ui_reports_page_table_results($data) {
     foreach ($data as $row) {
       $row = (array) $row;
 
+
+      // Calculate timestamps diff.
+      $diff_seconds = $row['timestamp_stop'] - $row['timestamp_start'];
+      $notify_diff = 60*60*12; // 12 hours.
+
       $row['work_time'] =  gmdate("H:i:s", $row['timestamp_stop'] - $row['timestamp_start']);
       $row['timestamp_start'] = format_date($row['timestamp_start'], 'short');
       $row['timestamp_stop'] = format_date($row['timestamp_stop'], 'short');
       $row['name'] = l(user_load($row['uid'])->name, 'user/' . $row['uid']);
 
+
+
       if (user_access('administer time logs')) {
+        if ($diff_seconds > $notify_diff) {
+          $row['notify'] = t('Over 12h');
+        }
+        else {
+          $row['notify'] = t('OK');
+        }
+
         $row['edit'] = l(t('Edit'), TIMEBIT_MODEL_MODULE_URI . '/' . $row['tlid'] . '/edit');
         $row['delete'] = l(t('Delete'), TIMEBIT_MODEL_MODULE_URI . '/' . $row['tlid'] . '/delete');
       }
@@ -218,13 +232,14 @@ function _timebit_model_ui_reports_page_table_results_header() {
   );
 
   if (user_access('administer time logs')) {
+    $header[] = t('Diff');
     $header[] = t('Edit');
     $header[] = t('Delete');
   }
   return $header;
 }
 
-/**
+/**l
  * Return summary.
  *
  * @param $data
